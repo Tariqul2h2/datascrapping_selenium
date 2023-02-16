@@ -86,6 +86,7 @@ for location, tdate in zip(location_names, temp_date):
     last5year_url = base_url.replace('/weather/', '/history/daily/').rstrip('/') + f'/date/{get_last_five_years(tdate)}'
 
     '''''''''''''''''''''''''''''''''''''get thatday data '''''''''''''''''''''''''''''''''''''
+    print('Collecting that day data')
     driver.get(today_url)
     sleep(10)
     tbodies = driver.find_elements(By.CSS_SELECTOR, "tbody")
@@ -97,7 +98,8 @@ for location, tdate in zip(location_names, temp_date):
         except:
             pass
 
-    '''''''''''''''''''''''''''''''''''''get lastweek data '''''''''''''''''''''''''''''''''''''
+    '''''''''''''''''''''''''''''''''''''get day before data '''''''''''''''''''''''''''''''''''''
+    print('Collecting the day before of that day data')
     driver.get(yesterday_url)
     sleep(10)
     tbodies = driver.find_elements(By.CSS_SELECTOR, "tbody")
@@ -108,7 +110,8 @@ for location, tdate in zip(location_names, temp_date):
         except:
             pass
 
-    '''''''''''''''''''''''''''''''''''''get lastmonth data '''''''''''''''''''''''''''''''''''''
+    '''''''''''''''''''''''''''''''''''''get lastweek data '''''''''''''''''''''''''''''''''''''
+    print('Collecting a week before of that day data')
     driver.get(lastweek_url)
     sleep(10)
     tbodies = driver.find_elements(By.CSS_SELECTOR, "tbody")
@@ -119,7 +122,8 @@ for location, tdate in zip(location_names, temp_date):
         except:
             pass
 
-    '''''''''''''''''''''''''''''''''''''get lastyear data '''''''''''''''''''''''''''''''''''''
+    '''''''''''''''''''''''''''''''''''''get lastmonth data '''''''''''''''''''''''''''''''''''''
+    print('Collecting a month before of that day data')
     driver.get(lastmonth_url)
     sleep(10)
     tbodies = driver.find_elements(By.CSS_SELECTOR, "tbody")
@@ -131,6 +135,7 @@ for location, tdate in zip(location_names, temp_date):
             pass
 
     '''''''''''''''''''''''''''''''''''''get lastyear data '''''''''''''''''''''''''''''''''''''
+    print('Collecting a year before of that day data')
     driver.get(lastyear_url)
     sleep(10)
     tbodies = driver.find_elements(By.CSS_SELECTOR, "tbody")
@@ -141,6 +146,7 @@ for location, tdate in zip(location_names, temp_date):
         except:
             pass
     '''''''''''''''''''''''''''''''''''''get last2year data '''''''''''''''''''''''''''''''''''''
+    print('Collecting two years before of that day data')
     driver.get(last2year_url)
     sleep(10)
     tbodies = driver.find_elements(By.CSS_SELECTOR, "tbody")
@@ -152,6 +158,7 @@ for location, tdate in zip(location_names, temp_date):
             pass
     
     '''''''''''''''''''''''''''''''''''''get last3year data '''''''''''''''''''''''''''''''''''''
+    print('Collecting three years before of that day data')
     driver.get(last3year_url)
     sleep(10)
     tbodies = driver.find_elements(By.CSS_SELECTOR, "tbody")
@@ -163,6 +170,7 @@ for location, tdate in zip(location_names, temp_date):
             pass
 
     '''''''''''''''''''''''''''''''''''''get last4year data '''''''''''''''''''''''''''''''''''''
+    print('Collecting four years before of that day data')
     driver.get(last4year_url)
     sleep(10)
     tbodies = driver.find_elements(By.CSS_SELECTOR, "tbody")
@@ -174,6 +182,7 @@ for location, tdate in zip(location_names, temp_date):
             pass
 
     '''''''''''''''''''''''''''''''''''''get last5year data '''''''''''''''''''''''''''''''''''''
+    print('Collecting five years before of that day data')
     driver.get(last5year_url)
     sleep(10)
     tbodies = driver.find_elements(By.CSS_SELECTOR, "tbody")

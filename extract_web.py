@@ -3,18 +3,17 @@ from selenium.webdriver.common.keys import Keys
 import pandas as pd
 from selenium.webdriver.common.by import By
 from time import sleep
-import os
 from datetime import datetime, timedelta
+import openpyxl
 
 driver = webdriver.Chrome()
+workbook = openpyxl.load_workbook("Weather_data_sample.xlsx")
+sheet = workbook.active
 url = 'https://www.wunderground.com/history/daily/us/tx/austin/KAUS/date/2018-7-19'
 driver.get(url)
 df = pd.read_csv('sample_data.csv')
 location_names = df['location'].tolist()
 temp_date_str = df['date'].tolist()
-if not os.path.exists('files'):
-    os.mkdir('files')
-
 
 temp_date = [datetime.strptime(date_str, "%B %d, %Y").strftime("%Y-%-m-%-d") for date_str in temp_date_str]
 
@@ -74,7 +73,6 @@ for location, tdate in zip(location_names, temp_date):
     sleep(2)
     search_location.send_keys(Keys.RETURN)
     sleep(10)
-    print(driver.current_url)
     base_url = driver.current_url
     today_url = base_url.replace('/weather/', '/history/daily/').rstrip('/') + f'/date/{tdate}'
     yesterday_url = base_url.replace('/weather/', '/history/daily/').rstrip('/') + f'/date/{get_yesterday(tdate)}'
@@ -86,8 +84,9 @@ for location, tdate in zip(location_names, temp_date):
         '/') + f'/date/{get_last_three_years(tdate)}'
     last4year_url = base_url.replace('/weather/', '/history/daily/').rstrip('/') + f'/date/{get_last_four_years(tdate)}'
     last5year_url = base_url.replace('/weather/', '/history/daily/').rstrip('/') + f'/date/{get_last_five_years(tdate)}'
-    print(today_url)
-    # today
+
+    '''''''''''''''''''''''''''''''''''''get thatday data '''''''''''''''''''''''''''''''''''''
+    print('Collecting that day data')
     driver.get(today_url)
     sleep(10)
     tbodies = driver.find_elements(By.CSS_SELECTOR, "tbody")
@@ -98,124 +97,119 @@ for location, tdate in zip(location_names, temp_date):
             DATA.append(element)
         except:
             pass
-    data = "\n".join(DATA) + "\n"
-    with open(f"files/{location}_{tdate}.txt", "w") as file:
-        file.write(data)
 
-    # yesterday
+    '''''''''''''''''''''''''''''''''''''get day before data '''''''''''''''''''''''''''''''''''''
+    print('Collecting the day before of that day data')
     driver.get(yesterday_url)
     sleep(10)
     tbodies = driver.find_elements(By.CSS_SELECTOR, "tbody")
-    DATA = []
     for i in range(10):
         try:
             element = tbodies[i].text.strip()
             DATA.append(element)
         except:
             pass
-    data = "\n".join(DATA) + "\n"
-    with open(f"files/{location}_{tdate}.txt", "a") as file:
-        file.write(data)
-    # weekly
 
+    '''''''''''''''''''''''''''''''''''''get lastweek data '''''''''''''''''''''''''''''''''''''
+    print('Collecting a week before of that day data')
     driver.get(lastweek_url)
     sleep(10)
     tbodies = driver.find_elements(By.CSS_SELECTOR, "tbody")
-    DATA = []
     for i in range(10):
         try:
             element = tbodies[i].text.strip()
             DATA.append(element)
         except:
             pass
-    data = "\n".join(DATA) + "\n"
-    with open(f"files/{location}_{tdate}.txt", "a") as file:
-        file.write(data)
 
-    # monthly
+    '''''''''''''''''''''''''''''''''''''get lastmonth data '''''''''''''''''''''''''''''''''''''
+    print('Collecting a month before of that day data')
     driver.get(lastmonth_url)
     sleep(10)
     tbodies = driver.find_elements(By.CSS_SELECTOR, "tbody")
-    DATA = []
     for i in range(10):
         try:
             element = tbodies[i].text.strip()
             DATA.append(element)
         except:
             pass
-    data = "\n".join(DATA) + "\n"
-    with open(f"files/{location}_{tdate}.txt", "a") as file:
-        file.write(data)
 
     '''''''''''''''''''''''''''''''''''''get lastyear data '''''''''''''''''''''''''''''''''''''
-
-    # driver = webdriver.Chrome()
+    print('Collecting a year before of that day data')
     driver.get(lastyear_url)
     sleep(10)
     tbodies = driver.find_elements(By.CSS_SELECTOR, "tbody")
-    DATA = []
     for i in range(10):
         try:
             element = tbodies[i].text.strip()
             DATA.append(element)
         except:
             pass
-    data = "\n".join(DATA) + "\n"
-    with open(f"files/{location}_{tdate}.txt", "a") as file:
-        file.write(data)
-        # driver = webdriver.Chrome()
-        # last 2 year
+    '''''''''''''''''''''''''''''''''''''get last2year data '''''''''''''''''''''''''''''''''''''
+    print('Collecting two years before of that day data')
     driver.get(last2year_url)
     sleep(10)
     tbodies = driver.find_elements(By.CSS_SELECTOR, "tbody")
-    DATA = []
     for i in range(10):
         try:
             element = tbodies[i].text.strip()
             DATA.append(element)
         except:
             pass
-    data = "\n".join(DATA) + "\n"
-    with open(f"files/{location}_{tdate}.txt", "a") as file:
-        file.write(data)
-
+    
+    '''''''''''''''''''''''''''''''''''''get last3year data '''''''''''''''''''''''''''''''''''''
+    print('Collecting three years before of that day data')
     driver.get(last3year_url)
     sleep(10)
     tbodies = driver.find_elements(By.CSS_SELECTOR, "tbody")
-    DATA = []
     for i in range(10):
         try:
             element = tbodies[i].text.strip()
             DATA.append(element)
         except:
             pass
-    data = "\n".join(DATA) + "\n"
-    with open(f"files/{location}_{tdate}.txt", "a") as file:
-        file.write(data)
 
+    '''''''''''''''''''''''''''''''''''''get last4year data '''''''''''''''''''''''''''''''''''''
+    print('Collecting four years before of that day data')
     driver.get(last4year_url)
     sleep(10)
     tbodies = driver.find_elements(By.CSS_SELECTOR, "tbody")
-    DATA = []
     for i in range(10):
         try:
             element = tbodies[i].text.strip()
             DATA.append(element)
         except:
             pass
-    data = "\n".join(DATA) + "\n"
-    with open(f"files/{location}_{tdate}.txt", "a") as file:
-        file.write(data)
+
+    '''''''''''''''''''''''''''''''''''''get last5year data '''''''''''''''''''''''''''''''''''''
+    print('Collecting five years before of that day data')
     driver.get(last5year_url)
     sleep(10)
     tbodies = driver.find_elements(By.CSS_SELECTOR, "tbody")
-    DATA = []
     for i in range(10):
         try:
             element = tbodies[i].text.strip()
             DATA.append(element)
         except:
             pass
-    data = "\n".join(DATA)
-    with open(f"files/{location}_{tdate}.txt", "a") as file:
-        file.write(data)
+    ROW = 4
+    dict_list = []
+    for line in DATA:
+        try:
+            components = line.split()
+            if not ':30' in components[0]:
+                extract_data = components[2], components[4], components[6], components[8], components[9], components[
+                    11], \
+                    components[13], components[15], components[17]
+                dict_list.append(extract_data)
+        except:
+            None
+    START = 7
+    for i, data in enumerate(dict_list):
+        for j, value in enumerate(data):
+            sheet.cell(row=ROW, column=START + j, value=value)
+        START += j + 1
+    print(location, tdate)
+    workbook.save("Weather_data_sample.xlsx")
+    ROW += 1
+    print('Next ROW',ROW)
